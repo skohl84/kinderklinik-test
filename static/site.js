@@ -49,9 +49,9 @@
   var lastN = 0;
   window.addEventListener('resize', function(){ var n = window.innerWidth >= 980 ? 3 : (window.innerWidth >= 640 ? 2 : 1); if (n !== lastN){ lastN = n; legen(); } });
   // Feed-Filter
-  document.querySelectorAll('.filter button').forEach(function(b){
+  document.querySelectorAll('.filter button[data-filter]').forEach(function(b){
     b.addEventListener('click', function(){
-      document.querySelectorAll('.filter button').forEach(function(x){ x.setAttribute('aria-pressed','false'); });
+      document.querySelectorAll('.filter button[data-filter]').forEach(function(x){ x.setAttribute('aria-pressed','false'); });
       b.setAttribute('aria-pressed','true');
       var f = b.getAttribute('data-filter');
       alle.forEach(function(p){ p.style.display = (f === 'alle' || p.getAttribute('data-k') === f) ? '' : 'none'; });
@@ -78,4 +78,26 @@
       if (!n) ziel.innerHTML = '<span style="color:var(--grau);font-size:14px">Kein Treffer. Rufen Sie gerne die Terminvergabe an: 0241 80-88773</span>';
     });
   }
+})();
+(function(){
+  var ein = document.getElementById('teamsuche'); if (!ein) return;
+  var knoepfe = document.querySelectorAll('.teamfilter button'), zahl = document.querySelector('.teamzahl'), gruppe = 'alle';
+  function norm(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+  function zeigen(){
+    var q = norm(ein.value.trim()), n = 0;
+    document.querySelectorAll('.teamgruppe').forEach(function(g){
+      var sichtbar = 0, passt = gruppe === 'alle' || g.getAttribute('data-gruppe') === gruppe;
+      g.querySelectorAll('.tperson').forEach(function(p){
+        var ok = passt && (!q || norm(p.getAttribute('data-such')).indexOf(q) > -1);
+        p.style.display = ok ? '' : 'none'; if (ok) sichtbar++;
+      });
+      g.style.display = sichtbar ? '' : 'none'; n += sichtbar;
+    });
+    zahl.textContent = n + (n === 1 ? ' Person' : ' Personen');
+  }
+  knoepfe.forEach(function(b){ b.addEventListener('click', function(){
+    knoepfe.forEach(function(x){ x.setAttribute('aria-pressed','false'); }); b.setAttribute('aria-pressed','true');
+    gruppe = b.getAttribute('data-tf'); zeigen();
+  }); });
+  ein.addEventListener('input', zeigen); zeigen();
 })();
