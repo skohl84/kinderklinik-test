@@ -340,3 +340,5 @@ nav.haupt a{white-space:nowrap}@media (min-width:981px){.logo-platz{width:120px}
 .sektionen>.kt{margin:6px 0 10px}
 .sekraster{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 @media (max-width:980px){.sekraster{grid-template-columns:minmax(0,1fr)}}
+.logo-bild{height:46px;width:auto;display:block}@media (max-width:640px){.logo-bild{height:34px}}
+.sprache{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:38px;border-radius:999px;border:2px solid var(--navy);color:var(--navy);font-weight:700;font-size:14px;text-decoration:none;margin-left:6px;order:3}.sprache:hover{background:var(--navy);color:#fff}@media (max-width:980px){.sprache{margin-left:auto;margin-right:8px}}

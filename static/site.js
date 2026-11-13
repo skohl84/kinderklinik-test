@@ -1,5 +1,6 @@
 (function(){
   var root = document.body.getAttribute('data-root') || './';
+  var EN = document.documentElement.lang === 'en';
   // Menü auf kleinen Bildschirmen
   var mk = document.querySelector('.menuknopf'), nav = document.getElementById('hauptnav');
   if (mk) mk.addEventListener('click', function(){ var o = nav.classList.toggle('offen'); mk.setAttribute('aria-expanded', o); });
@@ -31,7 +32,7 @@
       var re = new RegExp('(' + worte.map(function(w){ return w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }).join('|') + ')', 'ig');
       liste.insertAdjacentHTML('beforeend', '<li><a href="' + root + s.u + 'index.html">' + esc(s.t) + (s.b ? ' <small>' + esc(s.b) + '</small>' : '') + '<small>' + aus.replace(re, '<mark>$1</mark>') + '</small></a></li>');
     });
-    if (!treffer.length) liste.innerHTML = '<li style="padding:10px 14px">Nichts gefunden. Terminvergabe: 0241 80-88773</li>';
+    if (!treffer.length) liste.innerHTML = (EN ? '<li style="padding:10px 14px">Nothing found. Appointments: +49 241 80-88773</li>' : '<li style="padding:10px 14px">Nichts gefunden. Terminvergabe: 0241 80-88773</li>');
   });
   // Feed als Mauerwerk: Beiträge in Spalten verteilen, Reihenfolge bleibt erhalten
   var feed = document.getElementById('feed'), alle = feed ? Array.prototype.slice.call(feed.querySelectorAll('.post')) : [];
@@ -75,7 +76,7 @@
           ziel.insertAdjacentHTML('beforeend', '<a href="' + root + d[2].replace(/^\//,'') + 'index.html">' + esc(d[0]) + ' → ' + esc(d[1]) + '</a>');
         }
       });
-      if (!n) ziel.innerHTML = '<span style="color:var(--grau);font-size:14px">Kein Treffer. Rufen Sie gerne die Terminvergabe an: 0241 80-88773</span>';
+      if (!n) ziel.innerHTML = (EN ? '<span style="color:var(--grau);font-size:14px">No match. Please call our appointment service: +49 241 80-88773</span>' : '<span style="color:var(--grau);font-size:14px">Kein Treffer. Rufen Sie gerne die Terminvergabe an: 0241 80-88773</span>');
     });
   }
 })();
@@ -93,7 +94,8 @@
       });
       g.style.display = sichtbar ? '' : 'none'; n += sichtbar;
     });
-    zahl.textContent = n + (n === 1 ? ' Person' : ' Personen');
+    var en = document.documentElement.lang === 'en';
+    zahl.textContent = n + (en ? (n === 1 ? ' person' : ' people') : (n === 1 ? ' Person' : ' Personen'));
   }
   knoepfe.forEach(function(b){ b.addEventListener('click', function(){
     knoepfe.forEach(function(x){ x.setAttribute('aria-pressed','false'); }); b.setAttribute('aria-pressed','true');
